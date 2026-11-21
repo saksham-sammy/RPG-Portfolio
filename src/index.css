@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&family=Cinzel:wght@400;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg:          #08080f;
+  --bg-panel:    #0e0e1c;
+  --bg-panel-2:  #12122066;
+  --gold:        #c9a84c;
+  --gold-light:  #fbbf24;
+  --gold-dim:    #7a611e;
+  --parchment:   #e8d5a3;
+  --muted:       #8a7a5a;
+  --border:      #2a2535;
+  --border-gold: #3a3020;
+  --purple:      #c084fc;
+  --blue:        #60a5fa;
+  --green:       #4ade80;
+  --red:         #f87171;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg);
+  color: var(--parchment);
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-font-smoothing: none;
+}
+
+/* ── Pixel border utility ─────────────────────────────────── */
+.rpg-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.rpg-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(201,168,76,0.08);
+  pointer-events: none;
+}
+
+.rpg-panel-gold {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-gold);
+  box-shadow: inset 0 0 40px rgba(201,168,76,0.03), 0 0 0 1px rgba(201,168,76,0.06);
+}
+
+/* ── Pixel font headings ──────────────────────────────────── */
+.font-pixel { font-family: 'Press Start 2P', monospace; }
+.font-vt    { font-family: 'VT323', monospace; }
+.font-cinzel { font-family: 'Cinzel', serif; }
+
+/* ── XP / Stat bars ──────────────────────────────────────── */
+.stat-bar-track {
+  height: 8px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+.stat-bar-fill {
+  height: 100%;
+  transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+}
+
+.stat-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 3px; height: 100%;
+  background: rgba(255,255,255,0.5);
+  filter: blur(1px);
+}
+
+/* ── Scanline overlay ─────────────────────────────────────── */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 4px
+  );
+}
+
+/* ── Rarity glow borders ──────────────────────────────────── */
+.rarity-legendary { border-color: #b8962a; box-shadow: 0 0 16px rgba(251,191,36,0.2), inset 0 0 20px rgba(251,191,36,0.04); }
+.rarity-epic      { border-color: #7c3aed; box-shadow: 0 0 16px rgba(192,132,252,0.2), inset 0 0 20px rgba(192,132,252,0.04); }
+.rarity-rare      { border-color: #2563eb; box-shadow: 0 0 16px rgba(96,165,250,0.2),  inset 0 0 20px rgba(96,165,250,0.04); }
+.rarity-uncommon  { border-color: #16a34a; box-shadow: 0 0 16px rgba(74,222,128,0.18), inset 0 0 20px rgba(74,222,128,0.03); }
+
+/* ── Corner decorations (CSS-only) ───────────────────────── */
+.corner-decor {
+  position: relative;
+}
+.corner-decor::before,
+.corner-decor::after {
+  content: '+';
+  position: absolute;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: var(--gold-dim);
+  line-height: 1;
+}
+.corner-decor::before { top: 4px; left: 6px; }
+.corner-decor::after  { top: 4px; right: 6px; }
+
+/* ── HP / MP bar ──────────────────────────────────────────── */
+.bar-hp { background: linear-gradient(90deg, #16a34a, #4ade80); }
+.bar-mp { background: linear-gradient(90deg, #5b21b6, #818cf8); }
+.bar-xp { background: linear-gradient(90deg, #92400e, #fbbf24); }
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+
+/* ── Pulse animation for status dot ──────────────────────── */
+@keyframes rpg-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+.status-pulse { animation: rpg-pulse 2s ease-in-out infinite; }
+
+/* ── Flicker animation for gold text ─────────────────────── */
+@keyframes flicker {
+  0%, 95%, 100% { opacity: 1; }
+  96%            { opacity: 0.7; }
+  97%            { opacity: 1; }
+  98%            { opacity: 0.8; }
+}
+.gold-flicker { animation: flicker 8s ease-in-out infinite; }
+
+/* ── Float animation for badges ──────────────────────────── */
+@keyframes float-badge {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-4px); }
+}
+.float { animation: float-badge 3s ease-in-out infinite; }
